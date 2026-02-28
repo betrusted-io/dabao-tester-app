@@ -1,0 +1,3 @@
+[submodule "xous-core"]
+	path = xous-core
+	url = https://github.com/betrusted-io/xous-core.git
