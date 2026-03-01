@@ -11,7 +11,7 @@
 */
 void main(void) {
     // this pinmask includes all pins except for PC13; notably it includes the UART pins
-    uint32_t pinmask = 0x1F8F783E;
+    uint32_t pinmask = 0x1F8F183E;
     set_gpio_mask(pinmask);
     set_input_pins(pinmask);
 
@@ -21,7 +21,7 @@ void main(void) {
         new = read_gpio_pins();
         if ((new ^ status) != 0) {
             push_fifo0(new ^ status);
-            status = new ^ status;
+            status = new;
         }
         wait_quantum();
     }

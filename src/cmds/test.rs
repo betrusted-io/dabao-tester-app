@@ -67,13 +67,17 @@ impl<'a> ShellCmdApi<'a> for Test {
                 "env" => {
                     log::info!("{:?}", std::env::vars());
                 }
+                // used to confirm existence of the correct device
+                "hello" => {
+                    log::info!("DB.TESTER");
+                }
                 "dabao" => {
                     // drain any stale changes
                     let _ = self.test_core.changes();
                     log::info!("TEST.START");
 
                     let mut expected_pins: Vec<u32> =
-                        vec![28, 27, 26, 25, 24, 23, 19, 18, 17, 16, 14, 13, 12, 11, 1, 2, 3, 4, 5];
+                        vec![28, 27, 26, 25, 24, 23, 19, 18, 17, 16, 12, 11, 1, 2, 3, 4, 5];
                     let start = std::time::Instant::now();
                     while std::time::Instant::now().duration_since(start).as_secs() < 5 {
                         let pins = self.test_core.changes();
@@ -92,7 +96,7 @@ impl<'a> ShellCmdApi<'a> for Test {
                     if expected_pins.is_empty() {
                         log::info!("TEST.PASSING");
                     } else {
-                        log::info!("TEST.FAIL");
+                        log::info!("TEST.FAIL: {:?}", expected_pins);
                     }
                 }
                 _ => {

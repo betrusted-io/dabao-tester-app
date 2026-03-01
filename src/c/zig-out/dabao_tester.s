@@ -21,7 +21,7 @@ _start:                                 # @_start
 	.type	main,@function
 main:                                   # @main
 # %bb.0:
-	lui	a0, 129272
+	lui	a0, 129266
 	addi	a0, a0, -1986
 	#APP
 	mv	s10, a0
@@ -42,6 +42,7 @@ main:                                   # @main
 	#APP
 	mv	a6, a0
 	#NO_APP
+	mv	a0, a1
 .LBB1_3:                                #   in Loop: Header=BB1_1 Depth=1
 	#APP
 	li	s4, 0

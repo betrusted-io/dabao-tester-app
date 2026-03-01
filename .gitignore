@@ -1,3 +1,4 @@
 *~
 target/
 apps.uf2
+.zig-cache/

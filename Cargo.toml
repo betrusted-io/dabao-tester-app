@@ -1,5 +1,5 @@
 [package]
-name = "dabo-tester-app"
+name = "dabao-tester-app"
 version = "0.1.0"
 edition = "2021"
 
@@ -14,23 +14,23 @@ num-derive = { version = "0.4.2", default-features = false }
 num-traits = { version = "0.2.14", default-features = false }
 bao1x-hal = { features = [
     "std",
-], optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
-bao1x-api = { git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
-bao1x-hal-service = { optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
-bao1x-emu = { optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
-usb-bao1x = { git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
+], optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
+bao1x-api = { git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
+bao1x-hal-service = { optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
+bao1x-emu = { optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
+usb-bao1x = { git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
 bytemuck = "1.24.0"
 
-aes = { default-features = false, optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
+aes = { default-features = false, optional = true, git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
 
-bio-lib = { git = "https://github.com/betrusted-io/xous-core", rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde" }
+bio-lib = { git = "https://github.com/betrusted-io/xous-core", rev = "c38214865fc5fa55f886d2f35a411da233effd3f" }
 arbitrary-int = "1.2"
 
 getrandom = "=0.2.12"
 
 [patch.crates-io.getrandom]
 git = "https://github.com/betrusted-io/xous-core"
-rev = "9841e0a199f1a0d280845d3fbfc7865d05fabfde"
+rev = "c38214865fc5fa55f886d2f35a411da233effd3f"
 
 [features]
 bao1x = ["utralib/bao1x", "usb-bao1x/bao1x", "aes/bao1x"]

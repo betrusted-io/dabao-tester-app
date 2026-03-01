@@ -46,6 +46,44 @@ All apps are built against a Xous version that is specified like this:
 
 A Xous version compatible with the commit ref specified here must be loaded on the Dabao, otherwise, you will have unpredictable program behavior. At the moment Xous is under heavy development, so there isn't a release tag that's guaranteed to work - it's recommended to either pull a Xous image from the [latest CI](https://ci.betrusted.io/latest-ci/baochip/dabao/) build, or preferably, to build an image using the `xous-core` repository.
 
+## Submodules
+
+`git submodule add --depth 1 https://github.com/betrusted-io/xous-core.git xous-core`
+
+To clone the repo:
+`git submodule update --init --depth 1 --no-recurse-submodules xous-core`
+
+## Building the LOCAL Baochip images (these run on the test jig baochip-1x itself)
+
+In `src/c`:
+`python3 -m ziglang build "-Dmodule=dabao_tester"`
+
+In `xous-core`:
+
+Note that the purpose of the xous-core repo is to fix a bootloader, kernel, and loader configuration
+that has a custom USB ID in it so we can tell it apart from the DUT. Thus this is built stand-alone,
+and not linked against the actual app itself.
+
+`cargo xtask bao1x-boot1`
+`cargo xtask dabao dabao-console --no-timestamp --kernel-feature debug-proc --git-describe v0.10.0`
+
+There is a convenience script called `build.ps1` that does all of this, checked into this repo.
+
+## DUT programs - these are what is loaded onto the devices
+
+Compiled out of this directory's submodule and signed with beta key:
+`cargo xtask bao1x-baremetal-dabao --loader-feature dabao-selftest --git-describe v0.10.0`
+
+Compiled out of `xous-core` `dev` branch directly & signed with beta key:
+`cargo xtask dabao dabao-console --no-timestamp --kernel-feature debug-proc`
+
+The artifacts from these builds need to be copied into `code/testjig/images/` on the tester:
+namely, baremetal.uf2, xous.uf2, apps.uf2, and loader.uf2
+
+These should be signed with the 'beta' key - to prevent putting the dabao into developer
+mode - but still allow for beta-key revocation on locked down devices to reject these less-reviewed
+images.
+
 # Tester specific notes
 
 Pi base info
@@ -62,7 +100,7 @@ Codename:       trixie
 - enable I2C
 - enable serial port, with no login prompt
 
-emacs: `sudo apt-get install emacs-nox`
+emacs: `sudo apt-get install emacs-nox git gpiod screen`
 
 copy over /etc/udev/rules.d/99-com.rules
 
@@ -99,4 +137,4 @@ In su environment:
 
 apt install python3-dev
 
-python3 -m pip install RPi.GPIO pyudev pyserial smbus2
+python3 -m pip install RPi.GPIO pyudev pyserial smbus2 luma.oled

@@ -25,7 +25,7 @@ impl Resources for DabaoTester {
             claimer: "colorwheel".to_string(),
             cores: vec![CoreRequirement::Any],
             fifos: vec![Fifo::Fifo0],
-            static_pins: vec![28, 27, 26, 25, 24, 23, 19, 18, 17, 16, 14, 13, 12, 11, 1, 2, 3, 4, 5],
+            static_pins: vec![28, 27, 26, 25, 24, 23, 19, 18, 17, 16, 12, 11, 1, 2, 3, 4, 5],
             dynamic_pin_count: 0,
         }
     }
@@ -65,9 +65,7 @@ impl DabaoTester {
         }
 
         // now configure the claimed resource
-        let mut io_config = IoConfig::default();
-
-        io_config.mode = io_mode.unwrap_or(IoConfigMode::Overwrite);
+        let io_config = IoConfig::from_resource_spec(&Self::resource_spec(), &io_mode).unwrap();
         bio_ss.setup_io_config(io_config).unwrap();
 
         // safety: fifo is stored in this object so they aren't Drop'd before the object is
