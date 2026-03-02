@@ -5,7 +5,7 @@ application that checks for pin toggling on the respective Baochip DUT.
 
 ## DUT programs - Building apps loaded onto the production devices
 
-Compiled out of this project's `xous-core` submodule and signed with beta key:
+Compiled out of this project's `xous-core` submodule and signed with beta key (can use the baosign.ps1 script directly in the directory if the credentials directory is set up, e.g. `.\baosign.ps1 -Config baremetal -Target bunnie@xx.xx.xx.xx:`):
 
 `cargo xtask bao1x-baremetal-dabao --loader-feature dabao-selftest --git-describe v0.10.0`
 
@@ -120,3 +120,17 @@ In su environment:
 `python3 -m pip install RPi.GPIO pyudev pyserial smbus2 luma.oled`
 
 Repeat in user environment if doing script development.
+
+## Harden for offline operation
+
+```
+sudo apt install fake-hwclock
+sudo systemctl enable fake-hwclock
+sudo timedatectl set-ntp false
+```
+
+Turn of USB auto-suspend in /boot/firmware/cmdline.txt:
+
+`console=tty1 root=PARTUUID=e8aea68e-02 rootfstype=ext4 fsck.repair=yes rootwait cfg80211.ieee80211_regdom=US usbcore.autosuspend=-1`
+
+(add `usbcore.autosuspend=-1` with *no newline*, if it's on a different line when reading this that's just word autowrapping happening in the text renderer)
