@@ -78,6 +78,12 @@ Codename:       trixie
 - enable I2C
 - enable serial port, with no login prompt
 
+Turn off i2c-0. In /boot/firmware/config.txt, add
+
+`force_eeprom_read=0`
+
+under `[all]`
+
 `apt` install:
 
 `sudo apt-get install emacs-nox git gpiod screen python3-dev`
