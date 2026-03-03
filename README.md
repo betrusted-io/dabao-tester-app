@@ -134,3 +134,41 @@ Turn of USB auto-suspend in /boot/firmware/cmdline.txt:
 `console=tty1 root=PARTUUID=e8aea68e-02 rootfstype=ext4 fsck.repair=yes rootwait cfg80211.ieee80211_regdom=US usbcore.autosuspend=-1`
 
 (add `usbcore.autosuspend=-1` with *no newline*, if it's on a different line when reading this that's just word autowrapping happening in the text renderer)
+
+## Initializing a new tester
+
+The base image is on the heirloom imaging archive, and is at images/baochip-dabao-tester-03-03-2026.img.gz
+
+Copy it to a new disk with
+
+`zcat baochip-dabao-tester-03-03-2026.img.gz | sudo dd of=/dev/sdb bs=1M` (check the /dev/sdX every time)
+
+The image works with a Rpi4B-1G, and needs a 16GiB microSD card minimum.
+
+Bring-up testing from a bench power supply should set 5.3V / 2.0A I-lim to avoid brownout reboots.
+Current is around 500mA "normal" operation. All the devices share the same tailscale config,
+so only one can be plugged in at a time but cosult the tailscale dashboard for the IP address
+of the device.
+
+Initially, the host port should be plugged into HOST-2 for initializing the internal
+baochip-1x.
+
+Due to the base image being captured with slightly wrong settings...
+
+The base tester image has overlay-fs on, and will reboot itself if it can't talk
+to the local baochip. To stop this, during the reboot period, log in and type this:
+
+`sudo systemctl stop testjig`
+
+Turn off overlay-fs using raspi-config, then reboot. You'll have to log in again and type
+
+`sudo systemctl stop testjig`
+
+Then, initialize the local baochip:
+
+- Press RESET (SW1)
+- Edit `copytest.sh` to point to /dev/sda1 instead of /dev/sdc1
+- Run `copytest.sh`
+- Run `raspi-config` and turn on overlay-fs again
+
+The system should be good to go.
